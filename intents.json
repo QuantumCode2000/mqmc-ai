@@ -1,0 +1,78 @@
+{
+  "intents": [
+    {
+      "tag": "saludo",
+      "patterns": [
+        "Hola",
+        "¿Qué tal?",
+        "¿Hay alguien ahí?",
+        "Buen día"
+      ],
+      "responses": [
+        "¡Hola! ¿En qué puedo ayudarte?",
+        "¡Hola, gracias por visitar!",
+        "¡Hola! ¿En qué puedo hacer por ti?",
+        "¡Hola! ¿Cómo puedo ayudarte?"
+      ]
+    },
+    {
+      "tag": "despedida",
+      "patterns": ["Adiós", "Hasta luego", "Nos vemos"],
+      "responses": [
+        "¡Hasta luego, gracias por visitar!",
+        "¡Que tengas un buen día!",
+        "¡Adiós! ¡Vuelve pronto!"
+      ]
+    },
+    {
+      "tag": "agradecimiento",
+      "patterns": ["Gracias", "Muchas gracias", "Eso es útil", "¡Muchas gracias!"],
+      "responses": ["¡Feliz de poder ayudar!", "¡En cualquier momento!", "¡Es un placer!"]
+    },
+    {
+      "tag" : "sexualidad_concepto",
+      "patterns": [
+        "¿Qué es la sexualidad?",
+        "¿Qué significa sexualidad?",
+        "¿Qué abarca la sexualidad?",
+        "¿Qué implica la sexualidad?",
+        "Que es sexualidad",
+        "Que significa sexualidad",
+        "Que abarca la sexualidad",
+        "Que implica la sexualidad",
+        "Definición de sexualidad",
+        "Concepto de sexualidad"
+      ],
+      "responses": [
+        "La sexualidad abarca los aspectos físicos, emocionales, sociales y psicológicos relacionados con el sexo y las relaciones interpersonales."
+      ]
+    },
+    {
+      "tag": "edad_relaciones_sexuales",
+      "patterns": [
+        "¿Cuál es la edad adecuada para comenzar a tener relaciones sexuales?",
+        "¿A qué edad se puede tener relaciones sexuales?",
+        "¿Cuándo es apropiado tener relaciones sexuales?",
+        "¿Cuándo es seguro tener relaciones sexuales?",
+        "Edad para tener relaciones sexuales",
+        "A qué edad se puede tener relaciones sexuales",
+        "Cuándo es apropiado tener relaciones sexuales",
+        "Cuándo es seguro tener relaciones sexuales",
+        "Edad para tener sexo",
+        "A qué edad se puede tener sexo",
+        "Cuándo es apropiado tener sexo",
+        "Cuándo es seguro tener sexo",
+        "Edad para tener intimidad",
+        "A qué edad se puede tener intimidad",
+        "Cuándo es apropiado tener intimidad",
+        "Cuándo es seguro tener intimidad"
+      ],
+      "responses": [
+        "No hay una edad 'correcta'. Lo importante es esperar hasta sentirte emocionalmente preparado/a, tener información sobre anticoncepción"]
+    }
+    
+  ]
+}
+
+
+

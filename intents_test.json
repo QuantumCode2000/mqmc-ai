@@ -1,0 +1,29 @@
+{
+    "intents_test": [
+        {
+            "input": "sexualidad",
+            "output":         "La sexualidad abarca los aspectos físicos, emocionales, sociales y psicológicos relacionados con el sexo y las relaciones interpersonales.",
+            "expected": true
+        },
+        {
+            "input": "sexualidad",
+            "output":         "La sexualidad abarca los aspectos físicos, emocionales, sociales y psicológicos relacionados con el sexo y las relaciones interpersonales.",
+            "expected": true
+        },
+        {
+            "input": "sexualidad",
+            "output":         "La sexualidad abarca los aspectos físicos, emocionales, sociales y psicológicos relacionados con el sexo y las relaciones interpersonales.",
+            "expected": true
+        },
+        {
+            "input": "sexualidad",
+            "output":         "La sexualidad abarca los aspectos físicos, emocionales, sociales y psicológicos relacionados con el sexo y las relaciones interpersonales.",
+            "expected": true
+        },
+        {
+            "input": "sexualidad",
+            "output":         "La sexualidad abarca los aspectos físicos, emocionales, sociales y psicológicos relacionados con el sexo y las relaciones interpersonales.",
+            "expected": true
+        }
+    ]
+}

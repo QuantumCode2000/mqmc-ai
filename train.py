@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import json
+import matplotlib.pyplot as plt
 
 import torch
 import torch.nn as nn
@@ -90,12 +91,15 @@ model = NeuralNet(input_size, hidden_size, output_size).to(device)
 # Loss and optimizer / function of activation
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-
+losses = []
+accuracies = []
 # Train the model
 for epoch in range(num_epochs):
+    epoch_loss = 0.0
+    correct = 0
+    total = 0
     for (words, labels) in train_loader:
-        correct = 0
-        total = 0
+        
         words = words.to(device)
         labels = labels.to(dtype=torch.long).to(device)
         
@@ -110,23 +114,29 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
+        epoch_loss += loss.item()
+
         #  Track correct predictions and total number of samples
         _, predicted = torch.max(outputs, 1)
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-        accuracy = correct / total
+    epoch_accuracy = correct / total
+    losses.append(epoch_loss)
+    accuracies.append(epoch_accuracy)
         # the accuracy is not correct, because the batch size is 8, so the accuracy is calculated for each batch
         # this result is not the final accuracy
         
         
-    if (epoch+1) % 100 == 0:
+    # if (epoch+1) % 100 == 0:
         # print (f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
-         print (f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}, Accuracy: {accuracy:.4f}')
+        #  print (f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}, Accuracy: {accuracy:.4f}')
+    if (epoch+1) % 100 == 0:
+        print (f'Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss:.4f}, Accuracy: {epoch_accuracy:.4f}')
 
 
 # print(f'final loss: {loss.item():.4f}')
-print(f'Final loss: {loss.item():.4f}, Final accuracy: {accuracy:.4f}')
+# print(f'Final loss: {loss.item():.4f}, Final accuracy: {accuracy:.4f}')
 
 data = {
 "model_state": model.state_dict(),
@@ -141,6 +151,21 @@ FILE = "data.pth"
 torch.save(data, FILE)
 
 print(f'training complete. file saved to {FILE}')
+
+
+# Plotting loss
+plt.plot(losses)
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.title('Training Loss')
+plt.show()
+
+# Plotting accuracy
+plt.plot(accuracies)
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.title('Training Accuracy')
+plt.show()
 
 # Train the model
 # for epoch in range(num_epochs):

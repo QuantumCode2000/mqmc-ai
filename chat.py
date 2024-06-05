@@ -28,7 +28,7 @@ model.eval()
 bot_name = "MQMC Bot"
 print("Bienvenido al Chatbot de MQMC ")
 while True:
-    # sentence = "do you use credit cards?"
+   
     sentence = input("Tu: ")
     if sentence == "quit":
         break

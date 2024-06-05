@@ -16,23 +16,23 @@ with open('intents.json', 'r') as f:
 all_words = []
 tags = []
 xy = []
-# loop through each sentence in our intents patterns
+# Recorra cada oración en nuestros patrones de intenciones
 for intent in intents['intents']:
     tag = intent['tag']
-    # add to tag list
+    # agregar a la lista de etiquetas
     tags.append(tag)
     for pattern in intent['patterns']:
-        # tokenize each word in the sentence
+        # tokenizar cada palabra en la oración
         w = tokenize(pattern)
-        # add to our words list
+        # añade a la lista de las palabras
         all_words.extend(w)
-        # add to xy pair
+        # agregar al par xy
         xy.append((w, tag))
 
-# stem and lower each word
+# raíz y baje cada palabra
 ignore_words = ['?', '.', '!', ',','¿']
 all_words = [stem(w) for w in all_words if w not in ignore_words]
-# remove duplicates and sort
+# eliminar duplicados y ordenar
 all_words = sorted(set(all_words))
 tags = sorted(set(tags))
 
@@ -40,21 +40,21 @@ print(len(xy), "patterns")
 print(len(tags), "tags:", tags)
 print(len(all_words), "unique stemmed words:", all_words)
 
-# create training data
+# crear datos de entrenamiento
 X_train = []
 y_train = []
 for (pattern_sentence, tag) in xy:
-    # X: bag of words for each pattern_sentence
+    # X: bolsa de palabras para cada frase_patrón
     bag = bag_of_words(pattern_sentence, all_words)
     X_train.append(bag)
-    # y: PyTorch CrossEntropyLoss needs only class labels, not one-hot
+    # y: PyTorch Pérdida de entropía cruzada solo necesita etiquetas de clase, no one-hot
     label = tags.index(tag)
     y_train.append(label)
 
 X_train = np.array(X_train)
 y_train = np.array(y_train)
 
-# Hyper-parameters 
+# Hiperparámetros
 num_epochs = 1000
 batch_size = 8
 learning_rate = 0.001
@@ -70,11 +70,11 @@ class ChatDataset(Dataset):
         self.x_data = X_train
         self.y_data = y_train
 
-    # support indexing such that dataset[i] can be used to get i-th sample
+    # admite indexación de modo que el conjunto de datos [i] se pueda utilizar para obtener la i-ésima muestra
     def __getitem__(self, index):
         return self.x_data[index], self.y_data[index]
 
-    # we can call len(dataset) to return the size
+    # podemos llamar a len(conjunto de datos) para devolver el tamañoe
     def __len__(self):
         return self.n_samples
 
@@ -88,12 +88,12 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 model = NeuralNet(input_size, hidden_size, output_size).to(device)
 
-# Loss and optimizer / function of activation
+# Pérdida y optimizador/función de activación.
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 losses = []
 accuracies = []
-# Train the model
+# Entrenar el modelo
 for epoch in range(num_epochs):
     epoch_loss = 0.0
     correct = 0
@@ -103,20 +103,20 @@ for epoch in range(num_epochs):
         words = words.to(device)
         labels = labels.to(dtype=torch.long).to(device)
         
-        # Forward pass
+        # Pase adelantado
         outputs = model(words)
         # if y would be one-hot, we must apply
         # labels = torch.max(labels, 1)[1]
         loss = criterion(outputs, labels)
         
-        # Backward and optimize
+        # Retroceder y optimizar
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
         epoch_loss += loss.item()
 
-        #  Track correct predictions and total number of samples
+        #  Realice un seguimiento de las predicciones correctas y del número total de muestras
         _, predicted = torch.max(outputs, 1)
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
@@ -155,16 +155,16 @@ print(f'training complete. file saved to {FILE}')
 
 # Plotting loss
 plt.plot(losses)
-plt.xlabel('Epoch')
-plt.ylabel('Loss')
-plt.title('Training Loss')
+plt.xlabel('Época')
+plt.ylabel('Pérdida')
+plt.title('Pérdida de entrenamiento')
 plt.show()
 
 # Plotting accuracy
 plt.plot(accuracies)
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.title('Training Accuracy')
+plt.xlabel('Época')
+plt.ylabel('Precisión')
+plt.title('Precisión del entrenamiento')
 plt.show()
 
 # Train the model

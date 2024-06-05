@@ -1,8 +1,10 @@
+
+
 import numpy as np
 import random
 import json
 import matplotlib.pyplot as plt
-
+import datetime
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
@@ -30,7 +32,7 @@ for intent in intents['intents']:
         xy.append((w, tag))
 
 # stem and lower each word
-ignore_words = ['?', '.', '!', ',','¿']
+ignore_words = ['?', '.', '!', ',', '¿']
 all_words = [stem(w) for w in all_words if w not in ignore_words]
 # remove duplicates and sort
 all_words = sorted(set(all_words))
@@ -124,34 +126,45 @@ for epoch in range(num_epochs):
     epoch_accuracy = correct / total
     losses.append(epoch_loss)
     accuracies.append(epoch_accuracy)
-        # the accuracy is not correct, because the batch size is 8, so the accuracy is calculated for each batch
-        # this result is not the final accuracy
         
-        
-    # if (epoch+1) % 100 == 0:
-        # print (f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
-        #  print (f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}, Accuracy: {accuracy:.4f}')
     if (epoch+1) % 100 == 0:
-        print (f'Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss:.4f}, Accuracy: {epoch_accuracy:.4f}')
+        print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss:.4f}, Accuracy: {epoch_accuracy:.4f}')
 
-
-# print(f'final loss: {loss.item():.4f}')
-# print(f'Final loss: {loss.item():.4f}, Final accuracy: {accuracy:.4f}')
 
 data = {
-"model_state": model.state_dict(),
-"input_size": input_size,
-"hidden_size": hidden_size,
-"output_size": output_size,
-"all_words": all_words,
-"tags": tags
+    "model_state": model.state_dict(),
+    "input_size": input_size,
+    "hidden_size": hidden_size,
+    "output_size": output_size,
+    "all_words": all_words,
+    "tags": tags
 }
 
+# Save the training data
 FILE = "data.pth"
 torch.save(data, FILE)
-
 print(f'training complete. file saved to {FILE}')
 
+# Save the tokens to tokens.json
+tokens_entry = {
+    "fecha-hora": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    "tokens": all_words
+}
+
+tokens_data = []
+tokens_file = 'tokens.json'
+try:
+    with open(tokens_file, 'r') as json_file:
+        tokens_data = json.load(json_file)
+except FileNotFoundError:
+    tokens_data = []
+
+tokens_data.append({f"entrenamiento-{len(tokens_data) + 1}": tokens_entry})
+
+with open(tokens_file, 'w') as json_file:
+    json.dump(tokens_data, json_file, indent=4)
+
+print('tokens.json file saved')
 
 # Plotting loss
 plt.plot(losses)
@@ -166,33 +179,3 @@ plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.title('Training Accuracy')
 plt.show()
-
-# Train the model
-# for epoch in range(num_epochs):
-#     correct = 0
-#     total = 0
-#     for (words, labels) in train_loader:
-#         words = words.to(device)
-#         labels = labels.to(dtype=torch.long).to(device)
-        
-#         # Forward pass
-#         outputs = model(words)
-#         # Calculate loss
-#         loss = criterion(outputs, labels)
-        
-#         # Backward and optimize
-#         optimizer.zero_grad()
-#         loss.backward()
-#         optimizer.step()
-        
-#         # Track correct predictions and total number of samples
-#         _, predicted = torch.max(outputs, 1)
-#         total += labels.size(0)
-#         correct += (predicted == labels).sum().item()
-        
-#     accuracy = correct / total
-    
-#     if (epoch+1) % 100 == 0:
-#         print (f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}, Accuracy: {accuracy:.4f}')
-
-# print(f'Final loss: {loss.item():.4f}, Final accuracy: {accuracy:.4f}')
